@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<form action="/register" method="POST" onsubmit="return validate()">
+    <p>Email: <input type="email" name="email"></p>
+    <P>Password: <input type="password" name="password" id="password" required></p>
+    <p>Confirm Password: <input type="password" name="cpassword" id="cpassword"></p>
+    <p>Name: <input type="text" name="name"></p>
+    <p>Phone Number: <input type="text" name="phone"></p>
+    <p><input type="submit" value="Register"></p>
+    <a href="/loginForm">Login here</a>
+</form>
+{% endblock %}
