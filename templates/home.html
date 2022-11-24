@@ -1,10 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
-<p> {{error}} </p>
-<form action="/login" method="POST">
-	<p>Email: <input type="text" name="email"></p>
-	<p>Password: <input type="password" name="password"></p>
-	<p><input type="submit"></p>
-	<a href="/registerationForm">Register here</a>
-</form>
+
+{% if not loggedIn %}
+	<!-- <div id="signInButton">
+		<a class="link" href="/loginForm">Sign In</a>
+	</div> -->
+	<p> {{error}} </p>
+	<form action="/login" method="POST">
+		<p>Email: <input type="text" name="email"></p>
+		<p>Password: <input type="password" name="password"></p>
+		<p><input type="submit"></p>
+		<a href="/registerationForm">Register here</a>
+	</form>
+{% else %}
+	<div class="dropdown">
+		<button class="dropbtn">Hello, <br>{{email}}</button>
+		<div class="dropdown-content">
+			<a href="/logout">Sign Out</a>
+		</div>
+	</div>
+{% endif %}
+
+
+
 {% endblock %}

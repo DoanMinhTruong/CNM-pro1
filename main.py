@@ -10,10 +10,34 @@ UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = set(['jpeg', 'jpg', 'png', 'gif'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-
-@app.route('/')
+@app.route("/")
 def root():
-    return render_template('home.html')
+    loggedIn, email = getLoginDetails()
+    with sqlite3.connect('database.db') as conn:
+        cur = conn.cursor()
+        cur.execute('SELECT productId, name, price, description, image, available FROM products')
+        itemData = cur.fetchall()
+        cur.execute('SELECT categoryId, name FROM categories')
+        categoryData = cur.fetchall()
+    itemData = parse(itemData)   
+    return render_template('home.html', itemData=itemData, loggedIn=loggedIn, email = email, categoryData=categoryData)
+
+#Fetch user details if logged in
+def getLoginDetails():
+    with sqlite3.connect('database.db') as conn:
+        cur = conn.cursor()
+        if 'email' not in session:
+            loggedIn = False
+            email = ''
+            # noOfItems = 0
+        else:
+            loggedIn = True
+            cur.execute("SELECT userId, email FROM users WHERE email = '" + session['email'] + "'")
+            userId, email = cur.fetchone()
+            # cur.execute("SELECT count(productId) FROM kart WHERE userId = " + str(userId))
+            # noOfItems = cur.fetchone()[0]
+    conn.close()
+    return (loggedIn, email)
 
 @app.route("/register", methods = ['GET', 'POST'])
 def register():
@@ -68,6 +92,22 @@ def loginForm():
         return redirect(url_for('root'))
     else:
         return render_template('home.html', error='')
+@app.route("/logout")
+def logout():
+    session.pop('email', None)
+    return redirect(url_for('root'))
+def parse(data):
+    ans = []
+    i = 0
+    while i < len(data):
+        curr = []
+        for j in range(7):
+            if i >= len(data):
+                break
+            curr.append(data[i])
+            i += 1
+        ans.append(curr)
+    return ans
 
 if __name__ == '__main__':
     app.run(debug=True)
