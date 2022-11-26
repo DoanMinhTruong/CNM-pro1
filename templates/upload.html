@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<form action="/upload" method="POST"  enctype="multipart/form-data">
+    <p>Name: <input type="text" name="name"></p>
+    <p>Price: <input type="text" name="price"></p>
+    <p>Description: <input type="text" name="description"></p>
+    <p>Image: <input type="file" name="file" accept="image/png, image/gif, image/jpeg"></p>
+    <select name="category" id="">
+    {% for i in categories %}
+        <option value="{{i[0]}}">{{i[0]}}</option>
+    {% endfor %}
+    </select>
+    <p><input type="submit" value="Upload"></p>
+</form>
+{% endblock %}

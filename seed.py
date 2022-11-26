@@ -28,14 +28,17 @@ conn = sqlite3.connect('database.db')
 # 		name TEXT
 # 		)''')
 
-conn.execute('''
-    INSERT INTO users(password, email, name, phone) VALUES (`123456` , `test@gmail.com` , `DoanMinhTruong` , `0123321`);
-''')
+conn.execute('''INSERT INTO users (password, email, name, phone)
+    VALUES ("123456" , "test@gmail.com" , "DoanMinhTruong" , "0123321");''')
 
 conn.execute('''
-    INSERT INTO categories(name) VALUES (`Vật dụng sinh hoạt`);
-    INSERT INTO categories(name) VALUES (`Đồ dùng học tập`);
-    INSERT INTO categories(name) VALUES (`Quần áo`);
+    INSERT INTO categories(name) VALUES ("Vật dụng sinh hoạt");
+''')
+conn.execute('''
+    INSERT INTO categories(name) VALUES ("Đồ dùng học tập");
+''')
+conn.execute('''
+    INSERT INTO categories(name) VALUES ("Quần áo");
 ''')
 
 

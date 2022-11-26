@@ -27,8 +27,19 @@ conn.execute('''CREATE TABLE categories
 		(categoryId INTEGER PRIMARY KEY,
 		name TEXT
 		)''')
+		
+import hashlib
+conn.execute('INSERT INTO users (password, email, name, phone) VALUES (?, ?, ?, ?)', (hashlib.md5('123456'.encode()).hexdigest(), 'meir.truong.2309@gmail.com', 'DoanMinhTruong', '123456789'))
 
-
-
+conn.execute('''
+    INSERT INTO categories(name) VALUES ("Vật dụng sinh hoạt");
+''')
+conn.execute('''
+    INSERT INTO categories(name) VALUES ("Đồ dùng học tập");
+''')
+conn.execute('''
+    INSERT INTO categories(name) VALUES ("Quần áo");
+''')
+conn.commit()
 conn.close()
 print("CREATED DATABASE")
