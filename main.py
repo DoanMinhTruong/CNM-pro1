@@ -29,10 +29,10 @@ def profile():
         cur.execute('SELECT userId FROM users WHERE email = "' + session['email'] +'"')
         user = cur.fetchone()
         cur.execute('SELECT * FROM products WHERE userId = ?', user)
-
+        
         products = cur.fetchall()
     productData = parse(products)
-    return render_template('profile.html' , products = products)
+    return render_template('profile.html' , products = products , email = session['email'])
 @app.route('/uploadForm')
 def uploadForm():
     with sqlite3.connect('database.db') as conn:

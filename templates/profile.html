@@ -1,5 +1,244 @@
-{% extends 'base.html' %}
-{% block content %}
-    <a href="/uploadForm">Upload Product</a>
-    {{products}}
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Layout</title>
+    <meta charset="utf-8">
+    
+    <style type = "text/css">
+        body{
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .root {
+            width: 100%;
+            display: block;
+            background-color: grey;
+        }
+
+        .header {
+            width: 100%;
+            background-color: yellow;
+            min-height: 50px;
+        }
+
+        .container {
+            width: 100%;
+            background-color: white;
+            min-height: 500px;
+        }
+
+        .footer {
+            width: 100%;
+            background-color: grey;
+            min-height: 200px;
+        }
+
+        .topbar {
+            width: 100%;
+            background-color: grey;
+            padding: 8px;
+            min-height: 40px;
+        }
+
+        .topbar .topbar-left {
+            float: left;
+            width: 70%;
+        }
+
+        .topbar .topbar-right {
+            float: left;
+            width: 30%;
+            text-align: right;
+        }
+
+        .topbar ul {
+            list-style-type: none;
+            display: flex;
+            padding: 0px;
+            margin: 5px;
+        }
+
+        .topbar ul li {
+            float: left;
+            margin-right: 100px;
+        }
+
+        .search {
+            width: 100%;
+            position: relative;
+            display: flex;
+        }
+
+        .searchTerm {
+            width: 500px;
+            border: 3px solid #00B4CC;
+            border-right: none;
+            padding: 5px;
+            height: 20px;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+            color: #9DBFAF;
+            margin-left: 50px;
+        }
+
+        .searchTerm:focus{
+            color: #00B4CC;
+        }
+
+        .searchButton {
+            width: 100px;
+            height: 36px;
+            border: 1px solid #00B4CC;
+            background: #00B4CC;
+            text-align: center;
+            color: #fff;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 17px;
+        }
+        
+        .header .introduce-header{
+            text-align: center;
+            font-size: 20px;
+        }
+
+        .wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        ul.products {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        ul.products li{
+            flex-basis: 25%;
+            padding-left: 15px;
+            padding-right: 15px;
+            box-sizing: border-box;
+            margin-bottom: 30px;
+        }
+
+        ul.products li img{
+            max-width: 100%;
+            height: auto;
+        }
+
+        ul.products li .product-top{
+            position: relative;
+            overflow: hidden;
+        }
+
+        ul.products li .product-top .product-thumb{
+            display: block;
+        }
+
+        ul.products li:hover .product-top .product.thumb img{
+            filter: opacity(80%);
+        }
+
+        ul.products li .product-top .product-thumb img{
+            display: block;
+        }
+
+        ul.products li .product-info {
+            padding: 20px 0px;
+        }
+
+        ul.products li .product-info a{
+            display: block;
+            text-decoration: none;
+        }
+
+        ul.products li .product-info a.product-name{
+            color: #334862;
+            padding: 3px 0px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="root">
+        <div class="header">
+        
+            <!-- #bắt đầu top bar -->
+            <div class="topbar">
+                <div class="topbar-left">
+                        <form action="" class="search" method="post">
+                           <input type="text" class="searchTerm" placeholder="Bạn muốn tìm gì?">
+                           <button type="submit" class="searchButton">
+                            Tìm kiếm
+                          </button>
+                        </form>                    
+                    
+                </div>
+
+                <div class="topbar-right">
+                    <ul>
+                        <li>{{email}}</li>
+                        <li>Đăng tin</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- #kết thúc topbar -->
+        </div>
+
+        <div class="container">
+              
+            <div id="wrapper">
+                <div class="headline">
+                    <h3>Danh mục</h3>
+                </div>
+                <ul class="products">
+                    <li>
+                        <div class="product-item">
+                            <div class="product-top">
+                                <a href="" class="product-thumb">
+                                    <img src="data:image/jpeg;base64,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" alt="">
+                                </a>
+                            </div>
+                            <div class="product-info">
+                                <a href="" class="product-name">Gia dụng</a>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="product-item">
+                            <div class="product-top">
+                                <a href="" class="product-thumb">
+                                    <img src="products/dientu.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="product-info">
+                                <a href="" class="product-name">Điện tử</a>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="product-item">
+                            <div class="product-top">
+                                <a href="" class="product-thumb">
+                                    <img src="products/product-2.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="product-info">
+                                <a href="" class="product-name">Thời trang</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="footer">Footer</div>
+    </div>
+</body>
+</html>
